@@ -17,17 +17,16 @@ class QA_AsyncThread(threading.Thread):
 
         self._stopped = False
         self._main_loop = self.get_event_loop
-        self.name = QA_util_random_with_topic(
-            topic='QA_AsyncThread',
-            lens=3
-        ) if name is None else name
+        self.name = (
+            QA_util_random_with_topic(topic="QA_AsyncThread", lens=3)
+            if name is None
+            else name
+        )
         self._status = RUNNING_STATUS.PENDING
 
     def __repr__(self):
-        return '<QA_AsyncThread: {}  id={} ident {}>'.format(
-            self.name,
-            id(self),
-            self.ident
+        return "<QA_AsyncThread: {}  id={} ident {}>".format(
+            self.name, id(self), self.ident
         )
 
     @property
@@ -39,7 +38,7 @@ class QA_AsyncThread(threading.Thread):
             asyncio.new_event_loop().run_until_complete(self.main())
             self._status = RUNNING_STATUS.RUNNING
         except Exception as e:
-            print('QAASYNCTHREAD ERROR: {}'.format(e))
+            print("QAASYNCTHREAD ERROR: {}".format(e))
             self._status = RUNNING_STATUS.STOPED
             raise Exception
 
@@ -47,12 +46,14 @@ class QA_AsyncThread(threading.Thread):
         self.do(event)
 
     def do(self, event):
-        raise NotImplementedError('QA ASYNCTHREAD 需要重载do方法')
+        raise NotImplementedError("QA ASYNCTHREAD 需要重载do方法")
 
     def put(self, event):
-
-        event = event if isinstance(event, QA_Event) else QA_Event(
-            data=event, event_type=None)
+        event = (
+            event
+            if isinstance(event, QA_Event)
+            else QA_Event(data=event, event_type=None)
+        )
         self.queue.put_nowait(event)
 
     def put_nowait(self, event):
@@ -68,19 +69,15 @@ class QA_AsyncThread(threading.Thread):
         return self._loop
 
     async def main(self):
-        print('start')
+        print("start")
         async_q = self._queue.async_q
         main_loop = asyncio.get_event_loop()
         while not (self._stopped and async_q.empty()):
-
             try:
                 event = self.queue.get_nowait()
             except asyncio.QueueEmpty:
                 pass
             else:
-                asyncio.run_coroutine_threadsafe(
-                    self.event_hadler(event),
-                    main_loop
-                )
+                asyncio.run_coroutine_threadsafe(self.event_hadler(event), main_loop)
                 async_q.task_done()
             await asyncio.sleep(0.0001)

@@ -30,6 +30,7 @@ import sys
 import webbrowser
 import platform
 import configparser
+
 try:
     from setuptools import setup
 except:
@@ -37,27 +38,28 @@ except:
 """
 """
 
-if sys.version_info.major != 3 or sys.version_info.minor not in [5, 6, 7, 8, 9, 10]:
-    print('wrong version, should be 3.5/3.6/3.7/3.8/3.9 version')
+if sys.version_info.major != 3 or sys.version_info.minor not in [
+    11,
+    12,
+]:
+    print("wrong version, should be 3.11/3.12 version")
     sys.exit()
 
-with io.open('QUANTAXIS/__init__.py', 'rt', encoding='utf8') as f:
+with io.open("QUANTAXIS/__init__.py", "rt", encoding="utf8") as f:
     context = f.read()
-    VERSION = re.search(r'__version__ = \'(.*?)\'', context).group(1)
-    AUTHOR = re.search(r'__author__ = \'(.*?)\'', context).group(1)
+    VERSION = re.search(r"__version__ = \"(.*?)\"", context).group(1)
+    AUTHOR = re.search(r"__author__ = \"(.*?)\"", context).group(1)
 
 
 try:
-    if sys.platform in ['win32', 'darwin']:
-        print(webbrowser.open(
-            'https://github.com/QUANTAXIS/QUANTAXIS/releases'))
-        print('finish install')
+    if sys.platform in ["win32", "darwin"]:
+        print(webbrowser.open("https://github.com/QUANTAXIS/QUANTAXIS/releases"))
+        print("finish install")
 except:
     pass
 
 
 def read(fname):
-
     return codecs.open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 
@@ -65,10 +67,24 @@ NAME = "quantaxis"
 """
 
 """
-PACKAGES = ["QUANTAXIS", "QUANTAXIS.QAFetch", "QUANTAXIS.QACmd", 'QUANTAXIS.QASetting', "QUANTAXIS.QAFactor",
-            "QUANTAXIS.QAEngine", "QUANTAXIS.QAData", "QUANTAXIS.QAAnalysis", "QUANTAXIS.QAPubSub",
-            "QUANTAXIS.QASU", "QUANTAXIS.QAUtil",  "QUANTAXIS.QAIndicator", "QUANTAXIS.QAStrategy",
-            "QUANTAXIS.QAMarket", "QUANTAXIS.QIFI", "QUANTAXIS.QAWebServer"]
+PACKAGES = [
+    "QUANTAXIS",
+    "QUANTAXIS.QAFetch",
+    "QUANTAXIS.QACmd",
+    "QUANTAXIS.QASetting",
+    "QUANTAXIS.QAFactor",
+    "QUANTAXIS.QAEngine",
+    "QUANTAXIS.QAData",
+    "QUANTAXIS.QAAnalysis",
+    "QUANTAXIS.QAPubSub",
+    "QUANTAXIS.QASU",
+    "QUANTAXIS.QAUtil",
+    "QUANTAXIS.QAIndicator",
+    "QUANTAXIS.QAStrategy",
+    "QUANTAXIS.QAMarket",
+    "QUANTAXIS.QIFI",
+    "QUANTAXIS.QAWebServer",
+]
 """
 
 """
@@ -82,13 +98,13 @@ DESCRIPTION = "QUANTAXIS:Quantitative Financial Strategy Framework"
 # except Exception:
 # with open("README_ENG.md", "r", encoding='utf-8') as fh:
 #     LONG_DESCRIPTION = fh.read()
-LONG_DESCRIPTION = 'QUANTAXIS Financial Framework'
+LONG_DESCRIPTION = "QUANTAXIS Financial Framework"
 
 """
 
 """
 
-KEYWORDS = ["quantaxis", "quant", "finance", "Backtest", 'Framework']
+KEYWORDS = ["quantaxis", "quant", "finance", "Backtest", "Framework"]
 """
 
 """
@@ -100,7 +116,7 @@ URL = "https://github.com/quantaxis/quantaxis"
 
 LICENSE = "MIT"
 
-with open('requirements.txt') as reqs_file:
+with open("requirements.txt") as reqs_file:
     INSTALL_REQUIRES = reqs_file.readlines()
 
 setup(
@@ -109,19 +125,18 @@ setup(
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
     classifiers=[
-        'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python',
-        'Intended Audience :: Developers',
-        'Operating System :: OS Independent',
+        "License :: OSI Approved :: MIT License",
+        "Programming Language :: Python",
+        "Intended Audience :: Developers",
+        "Operating System :: OS Independent",
     ],
     install_requires=INSTALL_REQUIRES,
     entry_points={
-        'console_scripts': [
-            'quantaxis=QUANTAXIS.QACmd:QA_cmd',
-            'quantaxisq=QUANTAXIS.QAFetch.QATdx_adv:bat',
-            'qarun=QUANTAXIS.QACmd.runner:run',
-            'qawebserver=QUANTAXIS.QAWebServer.server:main',
-
+        "console_scripts": [
+            "quantaxis=QUANTAXIS.QACmd:QA_cmd",
+            "quantaxisq=QUANTAXIS.QAFetch.QATdx_adv:bat",
+            "qarun=QUANTAXIS.QACmd.runner:run",
+            "qawebserver=QUANTAXIS.QAWebServer.server:main",
         ]
     },
     keywords=KEYWORDS,
@@ -131,5 +146,5 @@ setup(
     license=LICENSE,
     packages=PACKAGES,
     include_package_data=True,
-    zip_safe=True
+    zip_safe=True,
 )

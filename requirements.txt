@@ -1,6 +1,6 @@
-pymongo==3.11.2
+pymongo>=4.0
 bs4
-pandas>=1.1.5
+pandas>=2.0
 lxml
 matplotlib
 requests
@@ -10,7 +10,7 @@ gevent-websocket>=0.10.1
 apscheduler>=3.3.1
 zenlog
 protobuf>=3.4.0
-motor==2.2
+motor>=2.2
 retrying
 seaborn>=0.11.1
 attrs>=17.4.0

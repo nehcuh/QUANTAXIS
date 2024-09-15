@@ -1,4 +1,4 @@
-#coding :utf-8
+# coding :utf-8
 #
 # The MIT License (MIT)
 #
@@ -31,12 +31,14 @@ by yutiansut
 2017/4/8
 """
 
-__version__ = '2.0.0.dev33'
-__author__ = 'yutiansut'
+__version__ = "2.0.0.dev34"
+__author__ = "yutiansut"
 
 import logging
+
 logging.disable(logging.INFO)
 import argparse
+
 # check
 import sys
 
@@ -47,6 +49,7 @@ import QUANTAXIS.QACmd
 # Backtest
 
 from QUANTAXIS.QACmd import QA_cmd
+
 # Data
 from QUANTAXIS.QAData import (
     QA_data_calc_marketvalue,
@@ -83,20 +86,21 @@ from QUANTAXIS.QAData import (
     QDS_IndexMinWarpper,
     QDS_StockDayWarpper,
     QDS_StockMinWarpper,
-    from_tushare
+    from_tushare,
 )
 from QUANTAXIS.QAData.dsmethods import *
+
 # ENGINE
 from QUANTAXIS.QAEngine import (
-    QA_AsyncQueue,
-    QA_AsyncScheduler,
-    QA_AsyncTask,
-    QA_AsyncThread,
+    # QA_AsyncQueue,
+    # QA_AsyncScheduler,
+    # QA_AsyncTask,
+    # QA_AsyncThread,
     QA_Engine,
     QA_Event,
     QA_Task,
     QA_Thread,
-    QA_Worker
+    QA_Worker,
 )
 from QUANTAXIS.QAFetch import (
     QA_fetch_get_chibor,
@@ -154,14 +158,15 @@ from QUANTAXIS.QAFetch import (
     QA_fetch_get_usstock_day,
     QA_fetch_get_usstock_list,
     QA_fetch_get_usstock_min,
-    get_stock_market
+    get_stock_market,
 )
+
 # fetch methods
 from QUANTAXIS.QAFetch.Fetcher import QA_quotation
 from QUANTAXIS.QAFetch.QACrawler import (
     QA_fetch_get_sh_margin,
     QA_fetch_get_sz_margin,
-    QA_fetch_get_margin_all
+    QA_fetch_get_margin_all,
 )
 from QUANTAXIS.QAFetch.QAQuery import (
     QA_fetch_account,
@@ -195,10 +200,11 @@ from QUANTAXIS.QAFetch.QAQuery import (
     QA_fetch_trade_date,
     QA_fetch_cryptocurrency_day,
     QA_fetch_cryptocurrency_min,
-    QA_fetch_cryptocurrency_list
+    QA_fetch_cryptocurrency_list,
 )
 from QUANTAXIS.QAFetch.QAQuery_Advance import *
 from QUANTAXIS.QAIndicator import *
+
 # market
 from QUANTAXIS.QAFetch.QAClickhouse import QACKClient
 
@@ -207,8 +213,9 @@ from QUANTAXIS.QASetting.QALocalize import (
     download_path,
     log_path,
     qa_path,
-    setting_path
+    setting_path,
 )
+
 # save
 from QUANTAXIS.QASU.main import (
     QA_SU_save_etf_day,
@@ -225,42 +232,106 @@ from QUANTAXIS.QASU.main import (
     QA_SU_save_stock_list,
     QA_SU_save_stock_min,
     QA_SU_save_stock_min_5,
-    QA_SU_save_stock_xdxr
+    QA_SU_save_stock_xdxr,
 )
 from QUANTAXIS.QASU.save_strategy import QA_SU_save_strategy
 from QUANTAXIS.QASU.user import QA_user_sign_in, QA_user_sign_up
 from QUANTAXIS.QAUtil import (  # QAPARAMETER
-    AMOUNT_MODEL, BROKER_EVENT, BROKER_TYPE, DATABASE, DATASOURCE,
-    ENGINE_EVENT, EXCHANGE_ID, FREQUENCE, MARKET_ERROR, MARKET_EVENT,
-    MARKET_TYPE, ORDER_DIRECTION, ORDER_EVENT, ORDER_MODEL, ORDER_STATUS,
-    OUTPUT_FORMAT, RUNNING_ENVIRONMENT, RUNNING_STATUS, TRADE_STATUS,
-    QA_Setting, QA_util_calc_time, QA_util_cfg_initial, QA_util_code_tolist,
-    QA_util_code_tostr, QA_util_date_gap, QA_util_date_int2str,
-    QA_util_code_adjust_ctp, QA_util_stamp2datetime,
-    QA_util_date_stamp, QA_util_date_str2int, QA_util_date_today,
-    QA_util_date_valid, QA_util_dict_remove_key, QA_util_diff_list,
-    QA_util_file_md5, QA_util_format_date2str, QA_util_get_cfg,
-    QA_util_get_date_index, QA_util_get_index_date, QA_util_get_last_datetime,
-    QA_util_get_last_day, QA_util_get_next_datetime, QA_util_get_next_day,
-    QA_util_get_next_trade_date, QA_util_get_order_datetime,
-    QA_util_get_pre_trade_date, QA_util_get_real_date,
-    QA_util_get_real_datelist, QA_util_get_trade_datetime,
-    QA_util_get_trade_gap, QA_util_get_trade_range, QA_util_id2date,
-    QA_util_if_trade, QA_util_if_tradetime, QA_util_is_trade,
-    QA_util_log_debug, QA_util_log_expection, QA_util_log_info,
-    QA_util_make_hour_index, QA_util_make_min_index, QA_util_mongo_infos,
-    QA_util_mongo_initial, QA_util_mongo_status, QA_util_ms_stamp,
-    QA_util_multi_demension_list, QA_util_random_with_topic, QA_util_realtime,
-    QA_util_save_csv, QA_util_select_hours, QA_util_select_min,
-    QA_util_send_mail, QA_util_sql_async_mongo_setting,
-    QA_util_sql_mongo_setting, QA_util_sql_mongo_sort_ASCENDING,
-    QA_util_sql_mongo_sort_DESCENDING, QA_util_tdxtimestamp,
-    QA_util_time_delay, QA_util_time_gap, QA_util_time_now, QA_util_time_stamp,
-    QA_util_to_datetime, QA_util_to_json_from_pandas,
-    QA_util_to_list_from_numpy, QA_util_to_list_from_pandas,
-    QA_util_to_pandas_from_json, QA_util_to_pandas_from_list, QA_util_web_ping,
-    QATZInfo_CN, future_ip_list, info_ip_list, stock_ip_list, trade_date_sse,
-    QA_util_get_next_period, QA_util_get_real_tradeday)
+    AMOUNT_MODEL,
+    BROKER_EVENT,
+    BROKER_TYPE,
+    DATABASE,
+    DATASOURCE,
+    ENGINE_EVENT,
+    EXCHANGE_ID,
+    FREQUENCE,
+    MARKET_ERROR,
+    MARKET_EVENT,
+    MARKET_TYPE,
+    ORDER_DIRECTION,
+    ORDER_EVENT,
+    ORDER_MODEL,
+    ORDER_STATUS,
+    OUTPUT_FORMAT,
+    RUNNING_ENVIRONMENT,
+    RUNNING_STATUS,
+    TRADE_STATUS,
+    QA_Setting,
+    QA_util_calc_time,
+    QA_util_cfg_initial,
+    QA_util_code_tolist,
+    QA_util_code_tostr,
+    QA_util_date_gap,
+    QA_util_date_int2str,
+    QA_util_code_adjust_ctp,
+    QA_util_stamp2datetime,
+    QA_util_date_stamp,
+    QA_util_date_str2int,
+    QA_util_date_today,
+    QA_util_date_valid,
+    QA_util_dict_remove_key,
+    QA_util_diff_list,
+    QA_util_file_md5,
+    QA_util_format_date2str,
+    QA_util_get_cfg,
+    QA_util_get_date_index,
+    QA_util_get_index_date,
+    QA_util_get_last_datetime,
+    QA_util_get_last_day,
+    QA_util_get_next_datetime,
+    QA_util_get_next_day,
+    QA_util_get_next_trade_date,
+    QA_util_get_order_datetime,
+    QA_util_get_pre_trade_date,
+    QA_util_get_real_date,
+    QA_util_get_real_datelist,
+    QA_util_get_trade_datetime,
+    QA_util_get_trade_gap,
+    QA_util_get_trade_range,
+    QA_util_id2date,
+    QA_util_if_trade,
+    QA_util_if_tradetime,
+    QA_util_is_trade,
+    QA_util_log_debug,
+    QA_util_log_expection,
+    QA_util_log_info,
+    QA_util_make_hour_index,
+    QA_util_make_min_index,
+    QA_util_mongo_infos,
+    QA_util_mongo_initial,
+    QA_util_mongo_status,
+    QA_util_ms_stamp,
+    QA_util_multi_demension_list,
+    QA_util_random_with_topic,
+    QA_util_realtime,
+    QA_util_save_csv,
+    QA_util_select_hours,
+    QA_util_select_min,
+    QA_util_send_mail,
+    QA_util_sql_async_mongo_setting,
+    QA_util_sql_mongo_setting,
+    QA_util_sql_mongo_sort_ASCENDING,
+    QA_util_sql_mongo_sort_DESCENDING,
+    QA_util_tdxtimestamp,
+    QA_util_time_delay,
+    QA_util_time_gap,
+    QA_util_time_now,
+    QA_util_time_stamp,
+    QA_util_to_datetime,
+    QA_util_to_json_from_pandas,
+    QA_util_to_list_from_numpy,
+    QA_util_to_list_from_pandas,
+    QA_util_to_pandas_from_json,
+    QA_util_to_pandas_from_list,
+    QA_util_web_ping,
+    QATZInfo_CN,
+    future_ip_list,
+    info_ip_list,
+    stock_ip_list,
+    trade_date_sse,
+    QA_util_get_next_period,
+    QA_util_get_real_tradeday,
+)
 
 
 from QUANTAXIS.QAPubSub.consumer import subscriber, subscriber_topic, subscriber_routing
@@ -285,15 +356,25 @@ from QUANTAXIS.QAFactor.featureView import QAFeatureView
 from QUANTAXIS.QAFactor.featureAnalysis import QAFeatureAnalysis
 from QUANTAXIS.QAFactor.featurebacktest import QAFeatureBacktest
 
-if sys.version_info.major != 3 or sys.version_info.minor not in [4, 5, 6, 7, 8, 9]:
-    print('wrong version, should be 3.4/3.5/3.6/3.7/3.8 version')
+if sys.version_info.major != 3 or sys.version_info.minor not in [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+]:
+    print("wrong version, should be 3.4/3.5/3.6/3.7/3.8/3.9/3.10/3.11/3.12 version")
     sys.exit()
 
-#QA_util_log_info('Welcome to QUANTAXIS, the Version is {}'.format(__version__))
+# QA_util_log_info('Welcome to QUANTAXIS, the Version is {}'.format(__version__))
 
 
 def __repr__():
-    return ' \n \
+    return " \n \
             ```````````````````````````````````````````````````````````````````````````````````````````````````````````````````````` \n \
             ``########`````##````````##``````````##`````````####````````##```##########````````#``````##``````###```##`````######`` \n \
             `##``````## ```##````````##`````````####````````##`##```````##```````##```````````###``````##````##`````##```##`````##` \n \
@@ -311,7 +392,7 @@ def __repr__():
             ``````````````````````````Copyright``yutiansut``2018``````QUANTITATIVE FINANCIAL FRAMEWORK````````````````````````````` \n \
             ``````````````````````````````````````````````````````````````````````````````````````````````````````````````````````` \n \
             ```````````````````````````````````````````````````````````````````````````````````````````````````````````````````````` \n \
-            ```````````````````````````````````````````````````````````````````````````````````````````````````````````````````````` \n '
+            ```````````````````````````````````````````````````````````````````````````````````````````````````````````````````````` \n "
 
 
 __str__ = __repr__
