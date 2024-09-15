@@ -42,69 +42,87 @@ from QUANTAXIS import __version__
 #                                          QA_ts_update_namechange,
 #                                          QA_ts_update_stock_basic)
 # 东方财富爬虫
-from QUANTAXIS.QASU.main import (QA_SU_crawl_eastmoney, QA_SU_save_bond_day,
-                                 QA_SU_save_bond_list, QA_SU_save_bond_min,
-                                 QA_SU_save_etf_day, QA_SU_save_etf_list,
-                                 QA_SU_save_etf_min, QA_SU_save_financialfiles,
-                                 QA_SU_save_future_day,
-                                 QA_SU_save_future_day_all,
-                                 QA_SU_save_future_list, QA_SU_save_future_min,
-                                 QA_SU_save_future_min_all,
-                                 QA_SU_save_index_day, QA_SU_save_index_list,
-                                 QA_SU_save_index_min,
-                                 QA_SU_save_index_transaction,
-                                 QA_SU_save_option_50etf_day,
-                                 QA_SU_save_option_50etf_min,
-                                 QA_SU_save_option_300etf_day,
-                                 QA_SU_save_option_300etf_min,
-                                 QA_SU_save_option_commodity_day,
-                                 QA_SU_save_option_commodity_min,
-                                 QA_SU_save_option_contract_list,
-                                 QA_SU_save_option_day_all,
-                                 QA_SU_save_option_min_all,
-                                 QA_SU_save_report_calendar_day,
-                                 QA_SU_save_report_calendar_his,
-                                 QA_SU_save_single_bond_day,
-                                 QA_SU_save_single_bond_min,
-                                 QA_SU_save_single_etf_day,
-                                 QA_SU_save_single_etf_min,
-                                 QA_SU_save_single_future_day,
-                                 QA_SU_save_single_future_min,
-                                 QA_SU_save_single_index_day,
-                                 QA_SU_save_single_index_min,
-                                 QA_SU_save_single_stock_day,
-                                 QA_SU_save_single_stock_min,
-                                 QA_SU_save_stock_block, QA_SU_save_stock_day,
-                                 QA_SU_save_stock_divyield_day,
-                                 QA_SU_save_stock_divyield_his,
-                                 QA_SU_save_stock_info,
-                                 QA_SU_save_stock_info_tushare,
-                                 QA_SU_save_stock_list, QA_SU_save_stock_min,
-                                 QA_SU_save_stock_transaction,
-                                 QA_SU_save_stock_xdxr)
-from QUANTAXIS.QASU.save_binance import (QA_SU_save_binance,
-                                         QA_SU_save_binance_1day,
-                                         QA_SU_save_binance_1hour,
-                                         QA_SU_save_binance_1min,
-                                         QA_SU_save_binance_symbol)
-from QUANTAXIS.QASU.save_bitfinex import (QA_SU_save_bitfinex,
-                                          QA_SU_save_bitfinex_1day,
-                                          QA_SU_save_bitfinex_1hour,
-                                          QA_SU_save_bitfinex_1min,
-                                          QA_SU_save_bitfinex_symbol)
-from QUANTAXIS.QASU.save_bitmex import (QA_SU_save_bitmex,
-                                        QA_SU_save_bitmex_symbol)
-from QUANTAXIS.QASU.save_huobi import (QA_SU_save_huobi, QA_SU_save_huobi_1day,
-                                       QA_SU_save_huobi_1hour,
-                                       QA_SU_save_huobi_1min,
-                                       QA_SU_save_huobi_realtime,
-                                       QA_SU_save_huobi_symbol)
-from QUANTAXIS.QASU.save_okex import (QA_SU_save_okex, QA_SU_save_okex_1day,
-                                      QA_SU_save_okex_1hour,
-                                      QA_SU_save_okex_1min,
-                                      QA_SU_save_okex_symbol)
-from QUANTAXIS.QAUtil import (QA_Setting, QA_util_log_info,
-                              QA_util_mongo_initial)
+from QUANTAXIS.QASU.main import (
+    QA_SU_crawl_eastmoney,
+    QA_SU_save_bond_day,
+    QA_SU_save_bond_list,
+    QA_SU_save_bond_min,
+    QA_SU_save_etf_day,
+    QA_SU_save_etf_list,
+    QA_SU_save_etf_min,
+    QA_SU_save_financialfiles,
+    QA_SU_save_future_day,
+    QA_SU_save_future_day_all,
+    QA_SU_save_future_list,
+    QA_SU_save_future_min,
+    QA_SU_save_future_min_all,
+    QA_SU_save_index_day,
+    QA_SU_save_index_list,
+    QA_SU_save_index_min,
+    QA_SU_save_index_transaction,
+    QA_SU_save_option_50etf_day,
+    QA_SU_save_option_50etf_min,
+    QA_SU_save_option_300etf_day,
+    QA_SU_save_option_300etf_min,
+    QA_SU_save_option_commodity_day,
+    QA_SU_save_option_commodity_min,
+    QA_SU_save_option_contract_list,
+    QA_SU_save_option_day_all,
+    QA_SU_save_option_min_all,
+    QA_SU_save_report_calendar_day,
+    QA_SU_save_report_calendar_his,
+    QA_SU_save_single_bond_day,
+    QA_SU_save_single_bond_min,
+    QA_SU_save_single_etf_day,
+    QA_SU_save_single_etf_min,
+    QA_SU_save_single_future_day,
+    QA_SU_save_single_future_min,
+    QA_SU_save_single_index_day,
+    QA_SU_save_single_index_min,
+    QA_SU_save_single_stock_day,
+    QA_SU_save_single_stock_min,
+    QA_SU_save_stock_block,
+    QA_SU_save_stock_day,
+    QA_SU_save_stock_divyield_day,
+    QA_SU_save_stock_divyield_his,
+    QA_SU_save_stock_info,
+    QA_SU_save_stock_info_tushare,
+    QA_SU_save_stock_list,
+    QA_SU_save_stock_min,
+    QA_SU_save_stock_transaction,
+    QA_SU_save_stock_xdxr,
+)
+from QUANTAXIS.QASU.save_binance import (
+    QA_SU_save_binance,
+    QA_SU_save_binance_1day,
+    QA_SU_save_binance_1hour,
+    QA_SU_save_binance_1min,
+    QA_SU_save_binance_symbol,
+)
+from QUANTAXIS.QASU.save_bitfinex import (
+    QA_SU_save_bitfinex,
+    QA_SU_save_bitfinex_1day,
+    QA_SU_save_bitfinex_1hour,
+    QA_SU_save_bitfinex_1min,
+    QA_SU_save_bitfinex_symbol,
+)
+from QUANTAXIS.QASU.save_bitmex import QA_SU_save_bitmex, QA_SU_save_bitmex_symbol
+from QUANTAXIS.QASU.save_huobi import (
+    QA_SU_save_huobi,
+    QA_SU_save_huobi_1day,
+    QA_SU_save_huobi_1hour,
+    QA_SU_save_huobi_1min,
+    QA_SU_save_huobi_realtime,
+    QA_SU_save_huobi_symbol,
+)
+from QUANTAXIS.QASU.save_okex import (
+    QA_SU_save_okex,
+    QA_SU_save_okex_1day,
+    QA_SU_save_okex_1hour,
+    QA_SU_save_okex_1min,
+    QA_SU_save_okex_symbol,
+)
+from QUANTAXIS.QAUtil import QA_Setting, QA_util_log_info, QA_util_mongo_initial
 
 
 class CLI(cmd.Cmd):
@@ -365,13 +383,19 @@ class CLI(cmd.Cmd):
             arg = arg.split(" ")
 
             if len(arg) == 1 and arg[0] == "all":
+                # if (
+                #     QA_Setting()
+                #     .client.quantaxis.user_list.find({"username": "admin"})
+                #     .count()
+                #     == 0
+                # ):
                 if (
-                    QA_Setting()
-                    .client.quantaxis.user_list.find({"username": "admin"})
-                    .count()
+                    QA_Setting().client.quantaxis.user_list.count_documents(
+                        {"username": "admin"}
+                    )
                     == 0
                 ):
-                    QA_Setting().client.quantaxis.user_list.insert(
+                    QA_Setting().client.quantaxis.user_list.insert_one(
                         {"username": "admin", "password": "admin"}
                     )
                 # TODO: 将ts还是tdx作为命令传入
