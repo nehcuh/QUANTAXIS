@@ -244,15 +244,19 @@ def QA_fetch_get_stock_time_to_market():
 
 
 def QA_fetch_get_trade_date(
+    exchange: str = "SSE",
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
-    exchange: str = "SSE",
 ):
     """
     explanation:
         Tushare 获取交易日历的接口封装
 
     params:
+        exchange ->
+            含义: 交易所, 默认为上交所 SSE
+            类型: str
+            参数支持: ['SSE', 'SZSE', 'SHFE', 'DCE', 'CFFEX', 'CZCE', 'INE']
         start_date ->
             含义: 起始时间, 默认从 "1990-12-19" 开始
             类型: int, str, datetime
@@ -261,11 +265,9 @@ def QA_fetch_get_trade_date(
             含义: 截止时间
             类型: int, str, datetime, 默认截止为当前日期
             参数支持: [19910906, '1992-03-02', datetime.date(2024, 9, 16)]
-        exchange ->
-            含义: 交易所, 默认为上交所 SSE
-            类型: str
-            参数支持: ['SSE', 'SZSE', 'SHFE', 'DCE', 'CFFEX', 'CZCE', 'INE']
     """
+    if exchange not in ["SSE", "SZSE", "SHFE", "DCE", "CFFEX", "CZCE", "INE"]:
+        raise ValueError(f"当前交易所 {exchange} 不支持")
     if start_date is None:
         start_date = "19901219"
     if end_date is None:

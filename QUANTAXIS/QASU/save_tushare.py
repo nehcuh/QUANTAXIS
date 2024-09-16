@@ -28,6 +28,7 @@ import re
 import time
 import pymongo
 
+from pymongo.helpers import ASCENDING
 import tushare as ts
 
 from QUANTAXIS.QAFetch.QATushare import (
@@ -178,16 +179,49 @@ def QA_SU_save_stock_info_tushare(client=DATABASE):
     print(" Save data to stock_info_tushare collection， OK")
 
 
-def QA_SU_save_trade_date_all(client=DATABASE):
+def QA_SU_save_trade_date_all(client=DATABASE, ui_log=None):
     """
     explanation:
         保存 tushare 导出的交易日历到数据库
     """
-    exchanges = ["SSE", "SZSE", "SHFE", "DCE", "CFFEX", "CZCE", "INE"]
-    start_dates = ["1990-12-19", "1990-12-01"]
-    data = QA_fetch_get_trade_date()
+    exchanges_info = {
+        "SSE": "1990-12-19",
+        "SZSE": "1990-12-01",
+        "SHFE": "1991-05-28",
+        "DCE": "1993-03-01",
+        "CFFEX": "2015-01-05",
+        "CZCE": "1990-10-12",
+        "INE": "2017-05-23",
+    }
     coll = client.trade_date
-    coll.insert_many(data)
+    coll.create_index(
+        [("exchange", pymongo.ASCENDING), ("date_stamp", pymongo.ASCENDING)]
+    )
+    for exchange in exchanges_info:
+        count = coll.count_documents({"exchange": exchange})
+        if count > 0:
+            # 获取最后一个文档
+            last_doc = coll.find_one(
+                {"exchange": exchange},
+                sort=[("date_stamp", ASCENDING)],
+            )
+            start_date = last_doc["trade_date"]
+        else:
+            start_date = exchanges_info[exchange]
+        data = QA_fetch_get_trade_date(
+            exchange=exchange,
+            start_date=start_date,
+        )
+        QA_util_log_info(
+            "##JOB Now Saving TRADE_DATE of {} From Tushare".format(exchange),
+            ui_log=ui_log,
+        )
+        if len(data) > 0:
+            coll.insert_many(data)
+        else:
+            print("exchange: {}".format(exchange))
+            print("exchange info: {}".format(exchanges_info[exchange]))
+            print("start_date: {}".format(start_date))
 
 
 def QA_SU_save_stock_info(client=DATABASE):
