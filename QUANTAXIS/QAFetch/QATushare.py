@@ -24,13 +24,14 @@
 
 import json
 import pandas as pd
+from pandas.core.ops.array_ops import Timestamp
 import toml
 import json
 import configparser
 import datetime
 import time
 import tushare as ts
-from typing import Optional
+from typing import Optional, List, Union
 from QUANTAXIS.QAUtil import (
     QA_util_date_int2str,
     QA_util_date_stamp,
@@ -247,7 +248,7 @@ def QA_fetch_get_trade_date(
     exchange: str = "SSE",
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
-):
+) -> List:
     """
     explanation:
         Tushare 获取交易日历的接口封装
@@ -285,6 +286,51 @@ def QA_fetch_get_trade_date(
         data[["exchange", "trade_date", "pretrade_date", "date_stamp"]]
     )
     return message
+
+def QA_fetch_get_future_contracts(
+    exchange: str="DCE",
+    spec_name: Union[str, List[str], None]=None,
+    cursor_date: Optional[str] = None,
+    fields: Optional[List[str]] = None
+) -> pd.DataFrame
+    """
+    explanation:
+        Tushare 获取交易所期货合约接口封装
+
+    params:
+        exchange ->
+            含义: 交易所, 默认为大商所 DCE
+            类型: str
+            参数支持: ['SHFE', 'DCE', 'CFFEX', 'CZCE', 'INE']
+        cursor_date ->
+            含义: 指定时间, 默认为 None, 即获取所有合约
+            类型: int, str, datetime
+            参数支持: [19910906, '1992-03-02', datetime.date(2024, 9, 16)]
+        fields ->
+            含义：自定义字段，默认为 None, 获取合约所有字段
+            类型: List[str]
+            参数支持: ['ts_code', 'symbol', 'name', 'list_date', 'delist_date']
+    Returns:
+        pd.DataFrame ->
+            合约信息
+    """
+    pro = get_pro()
+    if fields:
+        data = pro.fut_basic(
+            exchange=exchange,
+            fut_type="1",
+            fields=fields
+        )
+    else:
+        data = pro.fut_basic(
+            exchange=exchange,
+            fut_type="1",
+        )
+
+    if cursor_date is None:
+        return QA_util_to_json_from_pandas(data)
+    else:
+        cursor_date = pd.Timestamp(str(cursor_date)).strftime("%Y%m%d")
 
 
 def QA_fetch_get_lhb(date):
