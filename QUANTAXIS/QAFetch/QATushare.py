@@ -31,6 +31,7 @@ import configparser
 import datetime
 import time
 import tushare as ts
+import re
 from typing import Optional, List, Union
 from QUANTAXIS.QAUtil import (
     QA_util_date_int2str,
@@ -282,26 +283,28 @@ def QA_fetch_get_trade_date(
         data["cal_date"].map(str).apply(lambda x: QA_util_date_stamp(x))
     )
     data = data.rename(columns={"cal_date": "trade_date"})
-    message = QA_util_to_json_from_pandas(
-        data[["exchange", "trade_date", "pretrade_date", "date_stamp"]]
-    )
-    return message
+    return data[["exchange", "trade_date", "pretrade_date", "date_stamp"]]
+
 
 def QA_fetch_get_future_contracts(
-    exchange: str="DCE",
-    spec_name: Union[str, List[str], None]=None,
+    exchange: str = "DCE",
+    spec_name: Union[str, List[str], None] = None,
     cursor_date: Optional[str] = None,
-    fields: Optional[List[str]] = None
-) -> pd.DataFrame
+    fields: Optional[List[str]] = None,
+) -> pd.DataFrame:
     """
     explanation:
-        Tushare 获取交易所期货合约接口封装
+        Tushare 获取交易所期货合约接口封装，可以基于品种中文名，日期进行筛选
 
     params:
         exchange ->
             含义: 交易所, 默认为大商所 DCE
             类型: str
             参数支持: ['SHFE', 'DCE', 'CFFEX', 'CZCE', 'INE']
+        spec_name ->
+            含义：合约中文名称，默认为 None, 取所有品种
+            参数：str
+            参数支持：["豆粕", "棕榈油", ...]
         cursor_date ->
             含义: 指定时间, 默认为 None, 即获取所有合约
             类型: int, str, datetime
@@ -309,28 +312,51 @@ def QA_fetch_get_future_contracts(
         fields ->
             含义：自定义字段，默认为 None, 获取合约所有字段
             类型: List[str]
-            参数支持: ['ts_code', 'symbol', 'name', 'list_date', 'delist_date']
+            参数支持: ['symbol', 'name', 'list_date', 'delist_date']
     Returns:
         pd.DataFrame ->
             合约信息
     """
     pro = get_pro()
+
     if fields:
-        data = pro.fut_basic(
-            exchange=exchange,
-            fut_type="1",
-            fields=fields
-        )
+        if "list_date" not in fields:
+            fields.append("list_date")
+        if "delist_date" not in fields:
+            fields.append("delist_date")
+        if spec_name and spec_name not in fields:
+            fields.append("name")
+        data = pro.fut_basic(exchange=exchange, fut_type="1", fields=fields)
     else:
         data = pro.fut_basic(
             exchange=exchange,
             fut_type="1",
         )
+        data["date_stamp"] = (
+            data["list_date"].map(str).apply(lambda x: QA_util_date_stamp(x))
+        )
+        pattern = r"(.*?)\d+\s*"
+        data["chinese_name"] = data.name.apply(lambda x: re.findall(pattern, x)[0])
+
+    if spec_name:
+        if isinstance(spec_name, str):
+            spec_name = spec_name.split(",")
+        data = data.loc[data["chinese_name"].isin(spec_name)]
+        columns = data.columns.tolist()
+        columns.remove("prefix_name")
+        data = data[columns]
+
+    columns = data.columns.tolist()
+    columns.remove("ts_code")
+    data = data[columns].rename(columns={"symbol": "code"})
 
     if cursor_date is None:
-        return QA_util_to_json_from_pandas(data)
+        return data
     else:
         cursor_date = pd.Timestamp(str(cursor_date)).strftime("%Y%m%d")
+        return data.loc[
+            (data["list_date"] <= cursor_date) & (data["delist_date"] > cursor_date)
+        ]
 
 
 def QA_fetch_get_lhb(date):

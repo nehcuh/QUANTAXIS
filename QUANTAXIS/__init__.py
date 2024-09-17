@@ -180,6 +180,7 @@ from QUANTAXIS.QAFetch.QAQuery import (
     QA_fetch_future_list,
     QA_fetch_future_min,
     QA_fetch_future_tick,
+    QA_fetch_future_contracts,
     QA_fetch_index_day,
     QA_fetch_index_list,
     QA_fetch_index_min,

@@ -392,6 +392,84 @@ def QA_fetch_stock_list(collections=DATABASE.stock_list):
     )
 
 
+def QA_fetch_future_contracts(
+    collections=DATABASE.future_contracts,
+    code: Optional[str] = None,
+    exchanges: Union[str, List[str], None] = None,
+    spec_name: Union[str, List[str], None] = None,
+    cursor_date: Union[str, int, datetime.datetime, None] = None,
+    fields: Union[List[str], None] = None,
+):
+    """
+    explanation:
+        获取期货合约信息
+
+    params:
+        code ->
+            含义：合约名称，默认为空
+            类型: str,
+            参数支持: ["AO2507", "AL0511", ...]
+        exchanges ->
+            含义: 交易所, 默认为空，包含所有交易所信息
+            类型: Union[str, List[str], None]
+            参数支持: ['SHFE', 'DCE', 'CFFEX', 'CZCE', 'INE']
+        spec_name ->
+            含义：合约中文名称，默认为 None, 取所有品种
+            参数：Union[str, List[str], None]
+            参数支持：["豆粕", "棕榈油", ...]
+        cursor_date ->
+            含义: 指定时间, 默认为 None, 即获取所有合约
+            类型: int, str, datetime
+            参数支持: [19910906, '1992-03-02', datetime.date(2024, 9, 16)]
+        fields ->
+            含义：自定义字段，默认为 None, 获取合约所有字段
+            类型: Union[List[str], None]
+            参数支持: ['symbol', 'name', 'list_date', 'delist_date']
+    Returns:
+        pd.DataFrame ->
+            合约信息
+    """
+    if code:
+        cursor = collections.find({"code": code}, {"_id": 0})
+    else:
+        if exchanges:
+            if isinstance(exchanges, str):
+                exchanges = exchanges.split(",")
+            if spec_name:
+                if isinstance(spec_name, str):
+                    spec_name = spec_name.split(",")
+                cursor = collections.find(
+                    {
+                        "exchange": {"$in": exchanges},
+                        "chinese_name": {"$in": spec_name},
+                    },
+                    {"_id": 0},
+                    batch_size=10000,
+                )
+            else:
+                cursor = collections.find(
+                    {"exchange": {"$in": exchanges}}, {"_id": 0}, batch_size=10000
+                )
+        else:
+            if spec_name:
+                if isinstance(spec_name, str):
+                    spec_name = spec_name.split(",")
+                cursor = collections.find(
+                    {"chinese_name": {"$in": spec_name}}, {"_id": 0}, batch_size=10000
+                )
+
+    data = pd.DataFrame([item for item in cursor])
+    if cursor_date:
+        cursor_date = pd.Timestamp(str(cursor_date)).strftime("%Y%m%d")
+        data = data.loc[
+            (data["list_date"] <= cursor_date) & (data["delist_date"] > cursor_date)
+        ]
+    if fields:
+        return data[fields].set_index("code")
+    else:
+        return data.set_index("code")
+
+
 def QA_fetch_etf_list(collections=DATABASE.etf_list):
     "获取ETF列表"
 

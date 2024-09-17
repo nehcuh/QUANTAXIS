@@ -27,6 +27,7 @@ import json
 import re
 import time
 import pymongo
+import pandas as pd
 
 from pymongo.helpers import ASCENDING
 import tushare as ts
@@ -37,6 +38,7 @@ from QUANTAXIS.QAFetch.QATushare import (
     QA_fetch_get_stock_list,
     QA_fetch_get_stock_block,
     QA_fetch_get_trade_date,
+    QA_fetch_get_future_contracts,
     QA_fetch_get_lhb,
 )
 from QUANTAXIS.QAUtil import (
@@ -208,9 +210,12 @@ def QA_SU_save_trade_date_all(client=DATABASE, ui_log=None):
             start_date = last_doc["trade_date"]
         else:
             start_date = exchanges_info[exchange]
-        data = QA_fetch_get_trade_date(
-            exchange=exchange,
-            start_date=start_date,
+
+        data = QA_util_to_json_from_pandas(
+            QA_fetch_get_trade_date(
+                exchange=exchange,
+                start_date=start_date,
+            )
         )
         QA_util_log_info(
             "##JOB Now Saving TRADE_DATE of {} From Tushare".format(exchange),
@@ -222,6 +227,49 @@ def QA_SU_save_trade_date_all(client=DATABASE, ui_log=None):
             print("exchange: {}".format(exchange))
             print("exchange info: {}".format(exchanges_info[exchange]))
             print("start_date: {}".format(start_date))
+
+
+def QA_SU_save_contracts_all(client=DATABASE, ui_log=None):
+    """
+    explanation:
+        保存 tushare 导出的合约信息到数据库
+    """
+    exchanges = ["SHFE", "DCE", "CFFEX", "CZCE", "INE"]
+    coll = client.future_contracts
+    coll.create_index(
+        [
+            ("exchange", pymongo.ASCENDING),
+            ("code", pymongo.ASCENDING),
+            ("date_stamp", pymongo.ASCENDING),
+        ]
+    )
+    for exchange in exchanges:
+        contracts_info = QA_fetch_get_future_contracts(exchange=exchange)
+        code_list = contracts_info.code.tolist()
+        count = coll.count_documents({"exchange": exchange, "code": {"$in": code_list}})
+        if count > 0:
+            # 查询当前交易所已有的合约信息
+            cursor = coll.find(
+                {"exchange": exchange, "code": {"$in": code_list}},
+                {"_id": 0},
+                batch_size=10000,
+            )
+            local_contracts = pd.DataFrame([item for item in cursor])
+            external_codes = set(code_list) - set(local_contracts["code"].tolist())
+            if external_codes:
+                external_contracts_info = contracts_info.loc[
+                    contracts_info["code"].isin(list(external_codes))
+                ]
+                coll.insert_many(QA_util_to_json_from_pandas(external_contracts_info))
+
+                QA_util_log_info(
+                    "##JOB Now Saving Contracts Info of {} From {}".format(
+                        list(external_codes), exchange
+                    ),
+                    ui_log=ui_log,
+                )
+        else:
+            coll.insert_many(QA_util_to_json_from_pandas(contracts_info))
 
 
 def QA_SU_save_stock_info(client=DATABASE):
