@@ -1,0 +1,17 @@
+services:
+  mongodb:
+    image: mongo
+    container_name: qamongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - qamg:/data/db
+    environment:
+      TZ: Asia/Shanghai
+      MONGO_INITDB_DATABASE: quantaxis
+    restart: always
+
+volumes:
+  qamg:
+      name: qamg
+      external: true

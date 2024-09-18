@@ -15,7 +15,7 @@ retrying
 seaborn>=0.11.1
 attrs>=17.4.0
 pyconvert>=0.6.3
-janus==0.4.0
+janus
 pyecharts_snapshot
 async_timeout
 IPython
@@ -30,14 +30,14 @@ flask>=0.12.2
 pyecharts>=1.9.0
 six>=1.10.0
 pika
-empyrical
-pyfolio
+# empyrical
+# pyfolio
 tornado>=6.3.2
 qaenv>=0.0.4
 lz4
 clickhouse-driver
 clickhouse-cityhash
-alphalens
+# alphalens
 qanotify
-
+toml
 pyarrow>=6.0.1
