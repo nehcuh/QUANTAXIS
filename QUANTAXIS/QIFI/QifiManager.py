@@ -1,7 +1,7 @@
 import datetime
 import re
 
-import empyrical as em
+# import empyrical as em
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -171,7 +171,7 @@ class QA_QIFISMANAGER():
 
     def get_portfolio_panel(self, portfolio) -> pd.DataFrame:
         r = self.get_portfolio_account(portfolio)
-        
+
         rp = [self.database.find_one({'account_cookie': i}, {
                                      "accounts": 1, 'trading_day': 1, '_id': 0}) for i in r]
         return pd.DataFrame([mergex(i['accounts'], {'trading_day': i['trading_day']}) for i in rp]).query('user_id in {}'.format(r))
@@ -201,8 +201,8 @@ class QA_QIFISMANAGER():
         datetime                                                                                                ...
         2020-01-02                 100000                 100000                 100000                 100000  ...                 100000                 100000                  100000                 99340
         2020-01-03                 100000                 100723                 100000                 100000  ...                 101080                 101099                  102880                104310
-        2020-01-06                 100000                 108153                 100000                 100000  ...                 108510                 108529                  110310                108830       
-        2020-01-07                 100000                 104813                 100000                 100000  ...                 104930                 105189                  110030                109790       
+        2020-01-06                 100000                 108153                 100000                 100000  ...                 108510                 108529                  110310                108830
+        2020-01-07                 100000                 104813                 100000                 100000  ...                 104930                 105189                  110030                109790
         """
         return pd.concat([self.get_historyassets(acc, start, end) for acc in portfolio], axis=1)
 

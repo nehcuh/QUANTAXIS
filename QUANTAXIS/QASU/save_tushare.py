@@ -247,6 +247,10 @@ def QA_SU_save_contracts_all(client=DATABASE, ui_log=None):
         contracts_info = QA_fetch_get_future_contracts(exchange=exchange)
         code_list = contracts_info.code.tolist()
         count = coll.count_documents({"exchange": exchange, "code": {"$in": code_list}})
+        QA_util_log_info(
+            "##JOB Now Saving contracts of {}".format(exchange),
+            ui_log=ui_log,
+        )
         if count > 0:
             # 查询当前交易所已有的合约信息
             cursor = coll.find(

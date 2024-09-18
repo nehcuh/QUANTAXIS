@@ -64,8 +64,6 @@ def QA_SU_save_stock_info_tushare(engine="tushare", client=DATABASE):
     engine = select_save_engine("tushare")
     engine.QA_SU_save_stock_info_tushare()
 
-    pass
-
 
 def QA_SU_save_stock_list(engine, client=DATABASE):
     """save stock_list
@@ -121,6 +119,32 @@ def QA_SU_save_future_list(engine, client=DATABASE):
 
     engine = select_save_engine(engine)
     engine.QA_SU_save_future_list(client=client)
+
+def QA_SU_save_contracts_all(engine, client=DATABASE):
+    """
+    Arguments:
+        engine {[type]} -- 选择引擎，目前只支持 tushare
+
+    Keyword Arguments:
+        client {[type]} -- 数据库 (default: DATABASE)
+    """
+    engine = select_save_engine(engine)
+    engine.QA_SU_save_contracts_all(client=client)
+
+
+def QA_SU_save_trade_date_all(engine, client=DATABASE):
+    """
+    Arguments:
+        engine {[type]} -- 选择引擎, 目前只支持 tushare
+
+    Keyword Arguments:
+        client {[type]} -- 数据库 (default: DATABASE)
+    """
+    engine = select_save_engine(engine)
+    engine.QA_SU_save_trade_date_all(client=client)
+
+
+
 
 def QA_SU_save_single_future_day(code, engine, client=DATABASE, paralleled=False):
     """save single_future_day
@@ -242,9 +266,9 @@ def QA_SU_save_single_stock_day(code, engine, client=DATABASE, paralleled=False)
 def QA_SU_save_option_contract_list(engine, client=DATABASE):
     '''
 
-    :param engine: 
-    :param client: 
-    :return: 
+    :param engine:
+    :param client:
+    :return:
     '''
     engine = select_save_engine(engine)
     engine.QA_SU_save_option_contract_list(client=client)
@@ -565,6 +589,7 @@ def select_save_engine(engine, paralleled=False):
             'QA Error QASU.main.py call select_save_engine \
                 with parameter %s is None of  thshare, ts, Thshare, or tdx',
             engine)
+
 
 
 def QA_SU_save_stock_min_5(file_dir, client=DATABASE):

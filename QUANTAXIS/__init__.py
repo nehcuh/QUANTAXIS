@@ -223,6 +223,7 @@ from QUANTAXIS.QASU.main import (
     QA_SU_save_etf_min,
     QA_SU_save_financialfiles,
     QA_SU_save_future_list,
+    QA_SU_save_contracts_all,
     QA_SU_save_index_day,
     QA_SU_save_index_list,
     QA_SU_save_index_min,
@@ -341,21 +342,21 @@ from QUANTAXIS.QAPubSub.base import base_ps
 from QUANTAXIS.QAPubSub.debugtoool import debug_sub, debug_pub
 
 
-from QUANTAXIS.QAWebServer.basehandles import QABaseHandler, QAWebSocketHandler
-from QUANTAXIS.QAWebServer.schedulehandler import QAScheduleQuery, QASchedulerHandler
-from QUANTAXIS.QAWebServer.server import start_server
+# from QUANTAXIS.QAWebServer.basehandles import QABaseHandler, QAWebSocketHandler
+# from QUANTAXIS.QAWebServer.schedulehandler import QAScheduleQuery, QASchedulerHandler
+# from QUANTAXIS.QAWebServer.server import start_server
 
-from QUANTAXIS.QIFI.QifiAccount import QIFI_Account
-from QUANTAXIS.QIFI.QifiManager import QA_QIFIMANAGER, QA_QIFISMANAGER
+# from QUANTAXIS.QIFI.QifiAccount import QIFI_Account
+# from QUANTAXIS.QIFI.QifiManager import QA_QIFIMANAGER, QA_QIFISMANAGER
 
-from QUANTAXIS.QAStrategy.qactabase import QAStrategyCtaBase
+# from QUANTAXIS.QAStrategy.qactabase import QAStrategyCtaBase
 
 
-from QUANTAXIS.QAFactor.feature import QASingleFactor_DailyBase
-from QUANTAXIS.QAFactor.featurepool import MA10
-from QUANTAXIS.QAFactor.featureView import QAFeatureView
-from QUANTAXIS.QAFactor.featureAnalysis import QAFeatureAnalysis
-from QUANTAXIS.QAFactor.featurebacktest import QAFeatureBacktest
+# from QUANTAXIS.QAFactor.feature import QASingleFactor_DailyBase
+# from QUANTAXIS.QAFactor.featurepool import MA10
+# from QUANTAXIS.QAFactor.featureView import QAFeatureView
+# from QUANTAXIS.QAFactor.featureAnalysis import QAFeatureAnalysis
+# from QUANTAXIS.QAFactor.featurebacktest import QAFeatureBacktest
 
 if sys.version_info.major != 3 or sys.version_info.minor not in [
     4,

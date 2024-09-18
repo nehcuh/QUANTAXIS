@@ -56,6 +56,8 @@ from QUANTAXIS.QASU.main import (
     QA_SU_save_future_list,
     QA_SU_save_future_min,
     QA_SU_save_future_min_all,
+    QA_SU_save_trade_date_all,
+    QA_SU_save_contracts_all,
     QA_SU_save_index_day,
     QA_SU_save_index_list,
     QA_SU_save_index_min,
@@ -509,24 +511,30 @@ class CLI(cmd.Cmd):
                 # QA_SU_save_stock_info('tdx')
             elif len(arg) == 1 and arg[0] == "ts_all":
                 if (
+                    # QA_Setting()
+                    # .client.quantaxis.user_list.find({"username": "admin"})
+                    # .count()
                     QA_Setting()
-                    .client.quantaxis.user_list.find({"username": "admin"})
-                    .count()
+                    .client.quantaxis.user_list.count_documents({"username": "admin"})
                     == 0
                 ):
                     QA_Setting().client.quantaxis.user_list.insert(
                         {"username": "admin", "password": "admin"}
                     )
-                QA_ts_update_inc()
-                QA_ts_update_stock_basic()
-                QA_ts_update_namechange()
-                QA_ts_update_industry()
-                QA_ts_update_daily_basic()
+                # QA_ts_update_inc()
+                # QA_ts_update_stock_basic()
+                # QA_ts_update_namechange()
+                # QA_ts_update_industry()
+                # QA_ts_update_daily_basic()
+                QA_SU_save_trade_date_all("tushare")
+                QA_SU_save_contracts_all("tushare")
             elif len(arg) == 1 and arg[0] == "ts_financial":
                 if (
+                    # QA_Setting()
+                    # .client.quantaxis.user_list.find({"username": "admin"})
+                    # .count()
                     QA_Setting()
-                    .client.quantaxis.user_list.find({"username": "admin"})
-                    .count()
+                    .client.quantaxis.user_list.count_documents({"username": "admin"})
                     == 0
                 ):
                     QA_Setting().client.quantaxis.user_list.insert(
@@ -535,9 +543,11 @@ class CLI(cmd.Cmd):
                 QA_ts_update_inc()
             elif len(arg) == 1 and arg[0] == "ts_daily":
                 if (
+                    # QA_Setting()
+                    # .client.quantaxis.user_list.find({"username": "admin"})
+                    # .count()
                     QA_Setting()
-                    .client.quantaxis.user_list.find({"username": "admin"})
-                    .count()
+                    .client.quantaxis.user_list.count_documents({"username": "admin"})
                     == 0
                 ):
                     QA_Setting().client.quantaxis.user_list.insert(
